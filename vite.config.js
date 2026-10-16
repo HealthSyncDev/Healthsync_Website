@@ -33,6 +33,9 @@ function inlineCss() {
 
 export default defineConfig({
   plugins: [inlineCss()],
+  server: {
+    allowedHosts: ['healthsync.ae'],
+  },
   build: {
     cssCodeSplit: false,
     assetsInlineLimit: 4096,
