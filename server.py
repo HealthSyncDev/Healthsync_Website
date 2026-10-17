@@ -220,7 +220,7 @@ def _demo():
         except ValueError:
             pass
         else:
-            raise SystemExit(bad)
+            raise SystemExit(bad) 
 
 if __name__ == "__main__":
     _demo()
