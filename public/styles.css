@@ -3380,6 +3380,27 @@ body.contact-page {
   min-height: 64px;
   resize: vertical;
 }
+.contact-row > label {
+  min-width: 0;
+}
+.field-error {
+  display: block;
+  margin-top: 6px;
+  color: #c23b48;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-transform: none;
+  white-space: normal;
+}
+.field-error[hidden] {
+  display: none;
+}
+.contact-form input[aria-invalid="true"] {
+  border-color: #e36b73;
+  background: #fff6f6;
+}
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;

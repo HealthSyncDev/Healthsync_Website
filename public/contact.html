@@ -33,13 +33,15 @@
     </section>
 
     <section class="contact-card" aria-label="Contact form">
-      <form id="contact-form" class="contact-form">
+      <form id="contact-form" class="contact-form" novalidate>
         <div class="contact-row">
           <label>Name
-            <input name="name" type="text" autocomplete="name" placeholder="Your name" required>
+            <input name="name" type="text" autocomplete="name" placeholder="First and last name" aria-describedby="name-error">
+            <span class="field-error" id="name-error" hidden></span>
           </label>
           <label>Email
-            <input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@hospital.com" required>
+            <input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@hospital.com" aria-describedby="email-error">
+            <span class="field-error" id="email-error" hidden></span>
           </label>
         </div>
 
@@ -51,16 +53,6 @@
             <label class="contact-chip"><input type="checkbox" name="need" value="Hospital Information System"><span>Hospital Information System</span></label>
             <label class="contact-chip"><input type="checkbox" name="need" value="A product walkthrough"><span>A product walkthrough</span></label>
             <label class="contact-chip"><input type="checkbox" name="need" value="Something else"><span>Something else</span></label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Scope</legend>
-          <div class="contact-chips">
-            <label class="contact-chip"><input type="radio" name="scope" value="Just exploring"><span>Just exploring</span></label>
-            <label class="contact-chip"><input type="radio" name="scope" value="Pilot"><span>Pilot</span></label>
-            <label class="contact-chip"><input type="radio" name="scope" value="Department rollout"><span>Department rollout</span></label>
-            <label class="contact-chip"><input type="radio" name="scope" value="Hospital-wide"><span>Hospital-wide</span></label>
           </div>
         </fieldset>
 
