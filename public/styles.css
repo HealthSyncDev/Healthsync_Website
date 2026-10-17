@@ -32,7 +32,8 @@ html.lenis {
 /* ponytail: CSS reveals — no opacity:0 on hero (that delayed LCP) */
 @media (prefers-reduced-motion: no-preference) {
   .hero-fold > :not(h1) {
-    animation: fx-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+    /* ponytail: backwards — forwards fill locks transform and kills :hover lift */
+    animation: fx-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
   .hero-fold > .hero-pill { animation-delay: 0.08s; }
   .hero-fold > p { animation-delay: 0.2s; }
@@ -567,6 +568,11 @@ p {
   position: relative;
   width: min(1120px, 100%);
   margin: -30px auto 0;
+  /* ponytail: negative margin overlaps the CTA; no links in this block */
+  pointer-events: none;
+}
+.network-flow * {
+  pointer-events: none;
 }
 .booking-flow {
   position: relative;
@@ -3329,7 +3335,7 @@ body.contact-page {
 .contact-card {
   width: min(640px, calc(100% - 40px));
   margin: 0 auto 8px;
-  padding: 28px 28px 24px;
+  padding: 32px 30px 28px;
   border: 1px solid #fff;
   border-radius: 28px;
   background: #fff;
@@ -3338,20 +3344,30 @@ body.contact-page {
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 12px;
 }
 .contact-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  align-items: start;
+  gap: 16px 20px;
 }
-.contact-form label:not(.contact-chip),
-.contact-form legend {
+.contact-row > label,
+.contact-brief,
+.contact-form fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.contact-label {
   display: block;
-  margin-bottom: 8px;
+  margin: 0 0 0 4px;
+  padding-left: 0;
   color: #7d8b9e;
   font-size: 11px;
   font-weight: 600;
+  line-height: 1.2;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -3413,11 +3429,17 @@ body.contact-page {
   padding: 0;
   border: 0;
 }
+.contact-form legend.contact-label {
+  margin: 0 0 0 4px;
+  padding-top: 10px;
+}
+.contact-form fieldset .contact-chips {
+  margin-top: 16px;
+}
 .contact-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
 }
 .contact-chip {
   position: relative;
@@ -3518,11 +3540,10 @@ body.contact-page {
     gap: 18px;
   }
   .contact-form {
-    gap: 20px;
+    gap: 12px;
   }
-  .contact-form label:not(.contact-chip),
-  .contact-form legend {
-    margin-bottom: 8px;
+  .contact-label {
+    margin: 0 0 0 4px;
     font-size: 10px;
   }
   .contact-chips {
