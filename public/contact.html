@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f5f9">
+  <title>Contact — HealthSync</title>
+  <meta name="description" content="Tell us about your hospital. We'll reply within one business day.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="contact-page">
+<div class="site-shell">
+  <header class="site-header">
+    <div class="header-brand">
+      <a class="logo" href="index.html" aria-label="HealthSync home"><span>HealthSync</span></a>
+    </div>
+    <nav class="header-actions" aria-label="Primary navigation">
+      <a class="nav-contact" href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="talk-title">
+      <div class="hero-fold">
+        <h1 id="talk-title">Have a hospital need in mind?<br><span class="hero-premium">Let's get started.</span></h1>
+        <p>A reply within one business day. We'll talk through your workflows first.</p>
+      </div>
+    </section>
+
+    <section class="contact-card" aria-label="Contact form">
+      <form id="contact-form" class="contact-form">
+        <div class="contact-row">
+          <label>Name
+            <input name="name" type="text" autocomplete="name" placeholder="Your name" required>
+          </label>
+          <label>Email
+            <input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@hospital.com" required>
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>What do you need?</legend>
+          <div class="contact-chips">
+            <label class="contact-chip"><input type="checkbox" name="need" value="ClaimsSync"><span>ClaimsSync</span></label>
+            <label class="contact-chip"><input type="checkbox" name="need" value="IncidentSync"><span>IncidentSync</span></label>
+            <label class="contact-chip"><input type="checkbox" name="need" value="Hospital Information System"><span>Hospital Information System</span></label>
+            <label class="contact-chip"><input type="checkbox" name="need" value="A product walkthrough"><span>A product walkthrough</span></label>
+            <label class="contact-chip"><input type="checkbox" name="need" value="Something else"><span>Something else</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Scope</legend>
+          <div class="contact-chips">
+            <label class="contact-chip"><input type="radio" name="scope" value="Just exploring"><span>Just exploring</span></label>
+            <label class="contact-chip"><input type="radio" name="scope" value="Pilot"><span>Pilot</span></label>
+            <label class="contact-chip"><input type="radio" name="scope" value="Department rollout"><span>Department rollout</span></label>
+            <label class="contact-chip"><input type="radio" name="scope" value="Hospital-wide"><span>Hospital-wide</span></label>
+          </div>
+        </fieldset>
+
+        <label class="contact-brief">How can we help?
+          <textarea name="brief" rows="2" placeholder="Your hospital, the workflow, what you want to change…"></textarea>
+        </label>
+
+        <button class="orange-button" type="submit">Send message <span aria-hidden="true">↗</span></button>
+      </form>
+
+      <div class="contact-done" id="contact-done" hidden>
+        <p class="section-pill">We're on it</p>
+        <h2>Thanks — <em>we'll connect shortly.</em></h2>
+        <p>Your note is with us. Expect a reply soon — usually the same day.</p>
+        <a class="orange-button" href="index.html">Back to HealthSync <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+</div>
+<script type="module" src="contact.js"></script>
+</body>
+</html>

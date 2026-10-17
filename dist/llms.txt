@@ -1,9 +1,0 @@
-# HealthSync
-
-> Intuitive software for claims, incidents, complaints, and hospital management.
-
-## Pages
-
-- [Home](https://healthsync.ae/): Product overview
-- [How it works](https://healthsync.ae/#how-it-works): Claims, incidents, and hospital operations
-- [Contact](https://healthsync.ae/#contact): Talk to HealthSync

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f5f9">
+  <title>HealthSync — Healthcare, without the complexity</title>
+  <meta name="description" content="Intuitive software for claims, incidents, complaints, and hospital management.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- ponytail: non-blocking fonts; system stack paints first -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="site-shell" id="top">
+  <header class="site-header">
+    <div class="header-brand">
+      <a class="logo" href="#top" aria-label="HealthSync home"><span>HealthSync</span></a>
+    </div>
+    <nav class="header-actions" id="primary-nav" aria-label="Primary navigation">
+      <a class="nav-contact" href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-fold">
+        <a class="section-pill hero-pill" href="#how-it-works"><span class="tiny-ota-group" aria-hidden="true"><i>C</i><i>I</i><i>H</i></span>How It Works <span class="arrow">›</span></a>
+        <h1 id="hero-title"><span class="hero-premium">Healthcare,</span> without the complexity.<br>Software that <span class="hero-premium">works for care.</span></h1>
+        <p>Intuitive software for claims, incidents, complaints, and hospital management.</p>
+        <a class="orange-button" href="contact.html">Contact Us <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="network-flow">
+        <div class="booking-flow" aria-label="Tour bookings flow into connected booking systems">
+          <svg class="booking-paths" viewBox="0 0 1120 520" preserveAspectRatio="none" aria-hidden="true">
+            <path data-booking="one" d="M106 97 C106 294 560 294 560 455"/>
+            <path data-booking="two" d="M342 170 C342 305 560 305 560 415"/>
+            <path data-booking="three" class="dashed" d="M521 217 C521 326 560 326 560 415"/>
+            <path data-booking="four" class="dashed" d="M900 238 C900 335 560 335 560 415"/>
+            <path data-booking="five" d="M1005 150 C1005 318 560 318 560 455"/>
+            <path class="flow-stem" d="M560 415 V455"/>
+          </svg>
+          <div class="booking booking-one"><span class="avatar avatar-one"></span><span>Hospital<small>Doctor</small></span></div>
+          <div class="booking booking-two"><span class="avatar avatar-two"></span><span>Clinic<small>Quality</small></span></div>
+          <div class="booking booking-three"><span class="avatar avatar-three"></span><span>Hospital<small>Insurance</small></span></div>
+          <div class="booking booking-four"><span class="avatar avatar-four"></span><span>Clinic<small>Operations</small></span></div>
+          <div class="booking booking-five"><span class="avatar avatar-five"></span><span>Hospital<small>Patient Relations</small></span></div>
+        </div>
+
+        <div class="ota-lanes" aria-label="Hospital pain points">
+          <div class="ota-row">
+            <span class="ota-name left"><i class="ota-logo ventrata">?</i><span class="ota-copy"><b>Claim Reports</b><small>Where can I track claims in one simple place?</small></span></span>
+            <span class="ota-node"></span>
+            <span class="ota-name right"><span class="ota-copy"><b>Incident</b><small>Where can I log and follow hospital incidents properly?</small></span><i class="ota-logo palisis">?</i></span>
+          </div>
+          <div class="ota-row">
+            <span class="ota-name left"><i class="ota-logo bokun">?</i><span class="ota-copy"><b>HIS / HIMS</b><small>Why am I paying so many vendors for systems that don’t connect?</small></span></span>
+            <span class="ota-node"></span>
+            <span class="ota-name right"><span class="ota-copy"><b>Complaints</b><small>Where can I see every patient complaint and its status?</small></span><i class="ota-logo gy">?</i></span>
+          </div>
+          <div class="ota-row">
+            <span class="ota-name left"><i class="ota-logo expedia">?</i><span class="ota-copy"><b>Doctor Performance</b><small>How can I compare doctor outcomes without digging through files?</small></span></span>
+            <span class="ota-node"></span>
+            <span class="ota-name right"><span class="ota-copy"><b>Payer Performance</b><small>Which payers are slow, and where can I check that fast?</small></span><i class="ota-logo civitatis">?</i></span>
+          </div>
+          <div class="ota-row">
+            <span class="ota-name left"><i class="ota-logo viator">?</i><span class="ota-copy"><b>Denial Analysis</b><small>Why were these claims denied, and what do I fix first?</small></span></span>
+            <span class="ota-node"></span>
+            <span class="ota-name right"><span class="ota-copy"><b>Rejection Analytics</b><small>Where can I see which rejections keep repeating?</small></span><i class="ota-logo ventrata">?</i></span>
+          </div>
+          <span class="section-pill ota-end-pill">The Problem</span>
+        </div>
+
+        <svg class="caution-layer" aria-hidden="true">
+          <g data-caution="one" class="caution-flow"><path class="caution-tri" d="M0-9 L8 7 H-8 Z"/><text class="caution-bang" y="4">!</text></g>
+          <g data-caution="two" class="caution-flow"><path class="caution-tri" d="M0-9 L8 7 H-8 Z"/><text class="caution-bang" y="4">!</text></g>
+          <g data-caution="three" class="caution-flow"><path class="caution-tri" d="M0-9 L8 7 H-8 Z"/><text class="caution-bang" y="4">!</text></g>
+          <g data-caution="four" class="caution-flow"><path class="caution-tri" d="M0-9 L8 7 H-8 Z"/><text class="caution-bang" y="4">!</text></g>
+          <g data-caution="five" class="caution-flow"><path class="caution-tri" d="M0-9 L8 7 H-8 Z"/><text class="caution-bang" y="4">!</text></g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="problem" id="problem" aria-labelledby="problem-title">
+      <h2 id="problem-title"><span class="problem-accent">Too many</span> challenges.<br>Not enough <span class="problem-accent">clarity.</span></h2>
+      <span class="section-pill problem-bridge">We make it easier</span>
+      <div class="problem-timeline">
+        <div class="timeline-line"></div>
+        <article class="timeline-event event-left event-0"><h3>Simplify the complex.</h3><p>Make everyday healthcare tasks easier to manage.</p></article>
+        <span class="week week-0">1</span>
+        <article class="timeline-event event-right event-2"><h3>Bring clarity to your work.</h3><p>Make information easier to understand and workflows easier to navigate.</p></article>
+        <span class="week week-2">2</span>
+        <article class="timeline-event event-left event-4"><h3>Focus on what matters.</h3><p>Spend less effort managing complexity and more time moving work forward.</p></article>
+        <span class="week week-4">3</span>
+        <div class="timeline-summary">Healthcare works better when things are simpler.</div>
+      </div>
+    </section>
+
+    <section class="how" id="how-it-works" aria-labelledby="how-title">
+      <span class="section-pill">How It Works</span>
+      <h2 id="how-title"><span class="hero-premium">Meet the</span> solutions<br>moving <span class="hero-premium">healthcare forward.</span></h2>
+      <div class="how-cards">
+        <div class="how-track">
+        <article class="how-card"><div class="how-copy"><span class="step-number">01</span><span class="step-label">Claims Management</span><h3>ClaimsSync</h3><p>Turn complex claims data into meaningful insights to understand rejections, analyze performance, and support better reimbursement decisions.</p></div><div class="how-art art-connect"><img src="img/Rejection%20Analytics%20Dashboard.webp" width="800" height="594" alt="ClaimsSync Rejection Analytics dashboard" loading="lazy" decoding="async"></div></article>
+        <article class="how-card reverse"><div class="how-art art-analyse"><img src="img/Hospital%20Incident%20Management%20Dashboard.webp" width="800" height="594" alt="IncidentSync Hospital Incident Management dashboard" loading="lazy" decoding="async"></div><div class="how-copy"><span class="step-number">02</span><span class="step-label">Incident Management</span><h3>IncidentSync</h3><p>Manage incidents and patient complaints through structured reporting, risk assessment, and follow-up workflows.</p></div></article>
+        <article class="how-card"><div class="how-copy"><span class="step-number">03</span><span class="step-label">Hospital Operations</span><h3>Hospital Information System</h3><p>Support clinical and administrative workflows with software designed to help hospitals manage their day-to-day operations.</p></div><div class="how-art art-funds"><img src="img/HealthSync%20Hospital%20Dashboard.webp" width="800" height="594" alt="HealthSync Hospital Information System dashboard" loading="lazy" decoding="async"></div></article>
+        </div>
+      </div>
+      <div class="carousel-ctrl how-ctrl">
+        <button type="button" class="carousel-btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="slider-dots" role="group" aria-label="Solutions"></div>
+        <button type="button" class="carousel-btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
+    <section class="benefits" aria-labelledby="benefits-title">
+      <span class="benefits-eyebrow"><i></i>Our Benefits</span>
+      <h2 id="benefits-title"><span class="edge-soft">What</span> <span class="edge-hard">makes our software</span> <span class="edge-soft">different.</span></h2>
+      <p class="benefits-sub">Discover the advantages designed to optimize your experience and deliver real results.</p>
+      <div class="benefit-scroller" tabindex="0" aria-label="Benefits carousel">
+      <div class="benefit-grid">
+        <article class="benefit">
+          <div class="benefit-visual art-1" aria-hidden="true"><div class="bv-window"><b>Claims this week</b><div class="bv-bars"><i></i><i></i><i class="hot"></i><i></i><i></i></div><small>1,248 claims</small><span class="bv-cursor"></span></div></div>
+          <h3>Make decisions with greater clarity</h3>
+          <p>Turn complex healthcare information into meaningful insights that help teams understand what needs attention.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-2" aria-hidden="true"><div class="bv-check"><i></i><i></i><i></i><i></i></div></div>
+          <h3>Spend less time on manual work</h3>
+          <p>Simplify repetitive tasks and make everyday workflows easier to manage.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-3" aria-hidden="true"><div class="bv-donut"><i></i><span>72%</span></div></div>
+          <h3>Improve financial visibility</h3>
+          <p>Understand claim rejections, reimbursement patterns, and payer performance more clearly.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-4" aria-hidden="true"><div class="bv-pulse"><i></i><i></i><i></i><b>!</b></div></div>
+          <h3>Strengthen risk awareness</h3>
+          <p>Help teams identify incident risks and give reported issues the attention they need.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-5" aria-hidden="true"><div class="bv-steps"><em></em><i></i><i></i><i></i><i></i></div></div>
+          <h3>Deliver better complaint follow-up</h3>
+          <p>Make it easier to track patient concerns, monitor progress, and follow through on resolutions.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-6" aria-hidden="true"><div class="bv-orbit"><i></i><i></i><i></i><i></i><b>+</b></div></div>
+          <h3>Support better team coordination</h3>
+          <p>Give staff clearer workflows and responsibilities across their day-to-day work.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-7" aria-hidden="true"><svg class="bv-path" viewBox="0 0 160 90" overflow="visible"><path class="track" d="M18 72 C48 72 52 22 80 22 S112 72 142 28"/><path class="draw" d="M18 72 C48 72 52 22 80 22 S112 72 142 28"/><circle class="start" cx="18" cy="72" r="5.5"/><circle class="end" cx="142" cy="28" r="5.5"/><circle class="traveler" r="4"/></svg></div>
+          <h3>Create smoother patient journeys</h3>
+          <p>Support organized registration, appointments, and clinical workflows from one hospital information system.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-8" aria-hidden="true"><div class="bv-gauge"><i></i><span>Ops</span></div></div>
+          <h3>Gain better operational visibility</h3>
+          <p>Use available reports and dashboards to understand performance and identify areas that need improvement.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-visual art-9" aria-hidden="true"><div class="bv-stack"><span>Claims</span><span>Incidents</span><span>HIS</span></div></div>
+          <h3>Find solutions built for healthcare</h3>
+          <p>Choose purpose-built software for claims management, incident management, and hospital operations rather than relying on generic tools.</p>
+        </article>
+      </div>
+      </div>
+      <div class="carousel-ctrl">
+        <button type="button" class="carousel-btn" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="slider-dots" role="group" aria-label="Carousel pages"></div>
+        <button type="button" class="carousel-btn" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
+    <section class="edge" aria-labelledby="edge-title">
+      <span class="section-pill">Our Edge</span>
+      <h2 id="edge-title"><span class="edge-soft">Healthcare is</span> <span class="edge-hard">complex enough.</span><br><span class="edge-hard">Our software</span> <span class="edge-soft">will make it simpler.</span></h2>
+      <div class="edge-compare">
+        <article class="edge-card edge-healthsync">
+          <header><span class="logo">HealthSync Softwares</span></header>
+          <ul>
+            <li><i class="edge-ico" aria-hidden="true">✓</i>Clear claims insights & analytics</li>
+            <li><i class="edge-ico" aria-hidden="true">✓</i>Structured reporting & follow-up</li>
+            <li><i class="edge-ico" aria-hidden="true">✓</i>Organized hospital workflows</li>
+            <li><i class="edge-ico" aria-hidden="true">✓</i>Built around healthcare workflows</li>
+          </ul>
+        </article>
+        <article class="edge-card edge-banks">
+          <header>Traditional Softwares</header>
+          <ul>
+            <li><i class="edge-ico" aria-hidden="true">✕</i>Scattered reports & manual analysis</li>
+            <li><i class="edge-ico" aria-hidden="true">✕</i>Fragmented incident tracking</li>
+            <li><i class="edge-ico" aria-hidden="true">✕</i>Disconnected clinical & admin tasks</li>
+            <li><i class="edge-ico" aria-hidden="true">✕</i>Rigid, non-healthcare systems</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="growth" aria-labelledby="growth-title">
+      <div class="hs-dot-word" aria-hidden="true"><span class="hs-dot-word__base">HEALTHSYNC</span><span class="hs-dot-word__lit">HEALTHSYNC</span></div>
+      <span class="section-pill">Why HealthSync</span>
+      <h2 id="growth-title"><span class="hero-premium">We know</span> healthcare<br>beyond the <span class="hero-premium">screen.</span></h2>
+      <div class="growth-wheel" aria-label="HealthSync continuous improvement flow">
+        <svg viewBox="0 0 600 600" aria-hidden="true">
+          <defs>
+            <radialGradient id="wheel-bubble-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00a8ff" stop-opacity=".45"/>
+              <stop offset="55%" stop-color="#00a8ff" stop-opacity=".18"/>
+              <stop offset="100%" stop-color="#00a8ff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle class="wheel-bubble" cx="300" cy="300" r="147" fill="url(#wheel-bubble-grad)"/>
+          <circle class="wheel-path" cx="300" cy="300" r="150" fill="none" stroke="#00a8ff" stroke-width="2.5"/>
+          <g class="wheel-spin">
+            <g fill="#00a8ff">
+              <g transform="translate(406.1 193.9) rotate(45)"><path d="M-9-5.5 0 0-9 5.5Z M2-5.5 11 0 2 5.5Z"/></g>
+              <g transform="translate(406.1 406.1) rotate(135)"><path d="M-9-5.5 0 0-9 5.5Z M2-5.5 11 0 2 5.5Z"/></g>
+              <g transform="translate(193.9 406.1) rotate(225)"><path d="M-9-5.5 0 0-9 5.5Z M2-5.5 11 0 2 5.5Z"/></g>
+              <g transform="translate(193.9 193.9) rotate(315)"><path d="M-9-5.5 0 0-9 5.5Z M2-5.5 11 0 2 5.5Z"/></g>
+            </g>
+            <circle class="wheel-traveler" cx="300" cy="150" r="8" fill="#fff" stroke="#00a8ff" stroke-width="2.5"/>
+          </g>
+        </svg>
+        <div class="wheel-logo">HealthSync</div>
+        <div class="wheel-circle wheel-capital" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 10h.01M15 10h.01M12 10v4"/></svg></div>
+        <div class="wheel-circle wheel-costs" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/><path d="M8 11h6M11 8v6"/></svg></div>
+        <div class="wheel-circle wheel-surge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19c.8-3 2.8-4.5 5.5-4.5S14 16 14.8 19"/><path d="M13.5 19c.5-2.2 1.8-3.3 3.8-3.3 1.5 0 2.7.6 3.5 1.8"/></svg></div>
+        <div class="wheel-circle wheel-growth" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a5.5 5.5 0 0 1 3.5 9.7V15a1.5 1.5 0 0 1-3 0v-2.3A5.5 5.5 0 0 1 12 3Z"/></svg></div>
+        <div class="wheel-label label-capital"><strong>Close to hospital operations</strong></div>
+        <div class="wheel-label label-costs">
+          <strong>Identifying real gaps</strong>
+          <span class="label-fork" aria-hidden="true">
+            <svg viewBox="0 0 280 108">
+              <path class="fork-lines" d="M4 54 C40 54 56 22 96 18"/>
+              <path class="fork-lines" d="M4 54 C40 54 56 86 96 90"/>
+              <circle class="fork-dot" cx="96" cy="18" r="3.5"/>
+              <circle class="fork-dot" cx="96" cy="90" r="3.5"/>
+              <text class="fork-tip" x="108" y="22">Existing system limitations</text>
+              <text class="fork-tip" x="108" y="94">Operational challenges</text>
+            </svg>
+          </span>
+        </div>
+        <div class="wheel-label label-surge"><strong>Understanding the people who use the systems</strong></div>
+        <div class="wheel-label label-growth">
+          <strong>Turning insights into solutions</strong>
+          <span class="label-fork" aria-hidden="true">
+            <svg viewBox="0 0 240 108">
+              <path class="fork-lines" d="M236 54 C200 54 184 22 144 18"/>
+              <path class="fork-lines" d="M236 54 C200 54 184 86 144 90"/>
+              <circle class="fork-dot" cx="144" cy="18" r="3.5"/>
+              <circle class="fork-dot" cx="144" cy="90" r="3.5"/>
+              <text class="fork-tip" x="132" y="22" text-anchor="end">Smarter workflows</text>
+              <text class="fork-tip" x="132" y="94" text-anchor="end">Practical improvements</text>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="contact" aria-labelledby="closing-title">
+      <span class="section-pill">Let's Talk Healthcare</span>
+      <h2 id="closing-title"><span class="hero-premium">Ready to make</span> healthcare<br>work <span class="hero-premium">better?</span></h2>
+      <p class="closing-sub">Let's discuss your hospital's challenges and explore how HealthSync can help simplify your operations with healthcare-focused software solutions.</p>
+      <a class="orange-button" href="contact.html">Let's Talk About Your Needs <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>© 2026 HealthSync. All rights reserved.</span><div><span>Privacy Policy</span><span>Terms of Use</span></div></footer>
+</div>
+<script type="module" src="script.js?v=45"></script>
+</body>
+</html>
