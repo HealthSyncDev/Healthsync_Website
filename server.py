@@ -225,8 +225,8 @@ def _demo():
 if __name__ == "__main__":
     _demo()
     load_env()
-    print("http://127.0.0.1:5714", flush=True)
+    print("http://127.0.0.1:5174", flush=True)
     try:
-        HTTPServer(("0.0.0.0", 5714), Handler).serve_forever()
+        HTTPServer(("0.0.0.0", 5174), Handler).serve_forever()
     except KeyboardInterrupt:
         pass
