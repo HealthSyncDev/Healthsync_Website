@@ -254,6 +254,7 @@ def application_html(data):
         ("API investigation", data["debug"]),
         ("AI tools & verification", data["ai_tools"]),
         ("Why healthcare", data["why_health"]),
+        ("Salary expectation (INR)", data["salary"]),
     ]
     rows = "".join(
         _rule(24 if i else 32)
@@ -305,6 +306,7 @@ def send_application(fields, files):
     debug = field(fields.get("debug"), 5000, header=False)
     ai_tools = field(fields.get("ai_tools"), 4000, header=False)
     why_health = field(fields.get("why_health"), 4000, header=False)
+    salary = field(fields.get("salary"), 120)
     resume = files.get("resume")
     if not resume:
         raise ValueError("resume")
@@ -319,7 +321,7 @@ def send_application(fields, files):
         "name": name, "email": email, "phone": phone, "location": location,
         "linkedin": linkedin, "portfolio": portfolio, "role": role, "status": status, "remote": remote,
         "stack": stack, "project": project, "debug": debug, "ai_tools": ai_tools,
-        "why_health": why_health, "resume_name": resume_name,
+        "why_health": why_health, "salary": salary, "resume_name": resume_name,
     }
     msg = EmailMessage()
     msg["Reply-To"] = email
@@ -328,7 +330,7 @@ def send_application(fields, files):
         f"Name: {name}", f"Email: {email}", f"Phone: {phone}", f"Location: {location}",
         f"Role: {role}", f"Status: {status}", f"Remote: {remote}",
         f"LinkedIn: {linkedin}", f"Portfolio: {portfolio or '-'}",
-        f"Resume: {resume_name}", "",
+        f"Salary: {salary}", f"Resume: {resume_name}", "",
         "Stack:", stack, "", "Project:", project, "", "API debug:", debug, "",
         "AI tools:", ai_tools, "", "Why healthcare:", why_health,
     ]))
