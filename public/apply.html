@@ -11,7 +11,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body class="contact-page apply-page">
 <div class="site-shell">
@@ -33,13 +33,13 @@
     </section>
 
     <section class="contact-card" aria-label="Application form">
-      <aside class="apply-note" role="note">
-        <strong>Write this yourself.</strong>
-        AI-generated answers are easy to spot, and they tell us nothing about how you think.
-        Short, honest, specific answers beat polished fluff. We read for genuineness.
-      </aside>
-
       <form id="apply-form" class="contact-form" novalidate enctype="multipart/form-data">
+        <aside class="apply-note" role="note">
+          <strong>Write this yourself.</strong>
+          AI-generated answers are easy to spot, and they tell us nothing about how you think.
+          Short, honest, specific answers beat polished fluff. We read for genuineness.
+        </aside>
+
         <div class="contact-row">
           <label><span class="contact-label">Full name</span>
             <input name="name" type="text" autocomplete="name" required placeholder="First and last name">
@@ -125,7 +125,17 @@
           </label>
         </div>
 
-        <button class="orange-button" type="submit">Submit application <span aria-hidden="true">↗</span></button>
+        <div class="contact-row apply-captcha-row">
+          <label><span class="contact-label" id="captcha-label">Quick check</span>
+            <input name="captcha" type="text" inputmode="numeric" autocomplete="off" required placeholder="Answer">
+            <input type="hidden" name="captcha_token" value="">
+          </label>
+        </div>
+
+        <button class="orange-button apply-submit" type="submit">
+          <span class="apply-submit-label">Submit application <span aria-hidden="true">↗</span></span>
+          <span class="apply-submit-wait" hidden><span class="apply-spin" aria-hidden="true"></span> Sending…</span>
+        </button>
       </form>
 
       <div class="contact-done" id="apply-done" hidden>

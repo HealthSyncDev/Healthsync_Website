@@ -1,19 +1,30 @@
 """Serve public/ and POST /contact + /apply via the mailbox in .env."""
+import hashlib
+import hmac
 import html
 import json
 import os
+import random
 import re
 import smtplib
+import threading
+import time
+from collections import defaultdict
 from email import message_from_bytes
 from email.message import EmailMessage
 from email.policy import default as email_policy
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 _STATUS = frozenset({"Student", "Recent graduate", "Currently employed", "Other"})
 _ROLE = frozenset({"Backend Developer", "Frontend Developer"})
 _REMOTE = frozenset({"Yes", "No"})
 _RESUME_EXT = frozenset({".pdf", ".doc", ".docx"})
 _URL = re.compile(r"^https?://[^\s]+$", re.I)
+_SAFE_NAME = re.compile(r"^[\w.\- ()+]{1,120}$")
+
+# ponytail: in-process only; put nginx/cloudflare in front for real DDoS
+_rate_lock = threading.Lock()
+_rate_hits = defaultdict(list)
 
 def load_env(path=".env"):
     if not os.path.exists(path):
@@ -160,7 +171,46 @@ def optional_url(value, limit=300):
         raise ValueError("url")
     return text
 
+def _captcha_key():
+    # ponytail: reuse SMTP_PASS as signing key until CAPTCHA_SECRET is set
+    return (os.environ.get("CAPTCHA_SECRET") or os.environ.get("SMTP_PASS") or "healthsync").encode()
+
+def issue_captcha():
+    a, b = random.randint(2, 12), random.randint(2, 12)
+    exp = int(time.time()) + 900
+    payload = f"{a}.{b}.{a + b}.{exp}"
+    sig = hmac.new(_captcha_key(), payload.encode(), hashlib.sha256).hexdigest()[:32]
+    return {"a": a, "b": b, "token": f"{payload}.{sig}"}
+
+def check_captcha(token, answer):
+    try:
+        a, b, expect, exp, sig = str(token or "").split(".")
+        payload = f"{a}.{b}.{expect}.{exp}"
+        want = hmac.new(_captcha_key(), payload.encode(), hashlib.sha256).hexdigest()[:32]
+        if not hmac.compare_digest(want, sig) or int(exp) < int(time.time()) or int(answer) != int(expect):
+            raise ValueError("captcha")
+    except (TypeError, ValueError):
+        raise ValueError("captcha")
+
+def rate_allow(key, limit, window):
+    now = time.time()
+    with _rate_lock:
+        keep = [t for t in _rate_hits[key] if now - t < window]
+        if len(keep) >= limit:
+            _rate_hits[key] = keep
+            return False
+        keep.append(now)
+        _rate_hits[key] = keep
+        # ponytail: prune idle keys so the dict can't grow forever under IP churn
+        if len(_rate_hits) > 5000:
+            dead = [k for k, v in _rate_hits.items() if not v or now - v[-1] >= window]
+            for k in dead[:2000]:
+                _rate_hits.pop(k, None)
+        return True
+
 def parse_multipart(content_type, body):
+    if len(content_type) > 200:
+        raise ValueError("multipart")
     msg = message_from_bytes(
         f"Content-Type: {content_type}\r\nMIME-Version: 1.0\r\n\r\n".encode() + body,
         policy=email_policy,
@@ -168,16 +218,24 @@ def parse_multipart(content_type, body):
     fields, files = {}, {}
     if not msg.is_multipart():
         raise ValueError("multipart")
+    parts = 0
     for part in msg.iter_parts():
+        parts += 1
+        if parts > 40:
+            raise ValueError("parts")
         name = part.get_param("name", header="content-disposition")
-        if not name:
+        if not name or len(str(name)) > 64:
             continue
         filename = part.get_filename()
         payload = part.get_payload(decode=True) or b""
         if filename:
-            files[name] = (filename, payload, part.get_content_type() or "application/octet-stream")
+            if len(payload) > 5_000_000:
+                raise ValueError("resume")
+            files[str(name)] = (filename, payload, part.get_content_type() or "application/octet-stream")
         else:
-            fields[name] = payload.decode("utf-8", errors="replace")
+            if len(payload) > 20_000:
+                raise ValueError("field")
+            fields[str(name)] = payload.decode("utf-8", errors="replace")
     return fields, files
 
 def application_html(data):
@@ -228,6 +286,7 @@ def application_html(data):
  </table></td></tr></table></body></html>"""
 
 def send_application(fields, files):
+    check_captcha(fields.get("captcha_token"), fields.get("captcha"))
     name = person_name(fields.get("name"))
     email = person_email(fields.get("email"))
     phone = field(fields.get("phone"), 40)
@@ -250,7 +309,9 @@ def send_application(fields, files):
     if not resume:
         raise ValueError("resume")
     resume_name, resume_bytes, resume_type = resume
-    resume_name = os.path.basename(resume_name.replace("\\", "/")).strip() or "resume.pdf"
+    resume_name = os.path.basename(str(resume_name).replace("\\", "/")).strip() or "resume.pdf"
+    if not _SAFE_NAME.fullmatch(resume_name):
+        resume_name = f"resume{os.path.splitext(resume_name)[1].lower() or '.pdf'}"
     ext = os.path.splitext(resume_name)[1].lower()
     if ext not in _RESUME_EXT or not resume_bytes or len(resume_bytes) > 5_000_000:
         raise ValueError("resume")
@@ -282,11 +343,35 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory="public", **kwargs)
 
+    def _client_ip(self):
+        xff = (self.headers.get("X-Forwarded-For") or "").split(",")[0].strip()
+        return (xff or self.client_address[0])[:64]
+
+    def _discard(self, size):
+        left = max(0, min(size, 5_200_000))
+        while left > 0:
+            chunk = self.rfile.read(min(65536, left))
+            if not chunk:
+                break
+            left -= len(chunk)
+
     def do_GET(self):
-        # ponytail: pretty path only; file stays apply.html
-        if self.path.split("?", 1)[0].rstrip("/") == "/apply":
-            self.path = "/apply.html"
-        return super().do_GET()
+        try:
+            path = self.path.split("?", 1)[0].rstrip("/")
+            if path == "/apply-captcha":
+                ip = self._client_ip()
+                if not rate_allow(f"captcha:{ip}", 30, 600):
+                    self._json(429, {"error": "too many"}, retry=60)
+                    return
+                self._json(200, issue_captcha())
+                return
+            # ponytail: pretty path only; file stays apply.html
+            if path == "/apply":
+                self.path = "/apply.html"
+            return super().do_GET()
+        except Exception as err:
+            print("GET failed:", type(err).__name__, flush=True)
+            self.send_error(500)
 
     def end_headers(self):
         # ponytail: one origin; add a list if more sites call this
@@ -300,11 +385,13 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_response(204)
         self.end_headers()
 
-    def _json(self, code, body):
+    def _json(self, code, body, retry=None):
         raw = json.dumps(body).encode()
         self.send_response(code)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(raw)))
+        if retry is not None:
+            self.send_header("Retry-After", str(retry))
         self.end_headers()
         self.wfile.write(raw)
 
@@ -318,14 +405,22 @@ class Handler(SimpleHTTPRequestHandler):
         except ValueError:
             size = 0
         limit = 5_200_000 if path == "/apply" else 20_000
+        ip = self._client_ip()
+        # rate-limit before reading the body so floods don't burn RAM
+        bucket = (3, 900, 120) if path == "/apply" else (5, 600, 60)
+        if not rate_allow(f"post:{path}:{ip}", bucket[0], bucket[1]):
+            self._discard(size)
+            self._json(429, {"error": "too many"}, retry=bucket[2])
+            return
         if size <= 0 or size > limit:
+            self._discard(size)
             self._json(400, {"error": "bad body"})
             return
-        raw = self.rfile.read(size)
         try:
+            raw = self.rfile.read(size)
             if path == "/contact":
                 data = json.loads(raw)
-                if not isinstance(data, dict):
+                if not isinstance(data, dict) or len(data) > 20:
                     raise ValueError("json")
                 send_enquiry(data)
             else:
@@ -334,7 +429,7 @@ class Handler(SimpleHTTPRequestHandler):
                     raise ValueError("multipart")
                 fields, files = parse_multipart(ctype, raw)
                 send_application(fields, files)
-        except (json.JSONDecodeError, ValueError):
+        except (json.JSONDecodeError, ValueError, UnicodeError):
             self._json(400, {"error": "bad field"})
         except Exception as err:
             print(path, "mail failed:", type(err).__name__, flush=True)
@@ -377,6 +472,16 @@ def _demo():
         pass
     else:
         raise SystemExit("bad url")
+    c = issue_captcha()
+    check_captcha(c["token"], str(c["a"] + c["b"]))
+    try:
+        check_captcha(c["token"], "0")
+    except ValueError:
+        pass
+    else:
+        raise SystemExit("bad captcha")
+    assert rate_allow("t:demo", 2, 60) and rate_allow("t:demo", 2, 60)
+    assert not rate_allow("t:demo", 2, 60)
     # multipart smoke
     boundary = "----hs"
     sample = (
@@ -393,6 +498,6 @@ if __name__ == "__main__":
     load_env()
     print("http://127.0.0.1:5174", flush=True)
     try:
-        HTTPServer(("0.0.0.0", 5174), Handler).serve_forever()
+        ThreadingHTTPServer(("0.0.0.0", 5174), Handler).serve_forever()
     except KeyboardInterrupt:
         pass

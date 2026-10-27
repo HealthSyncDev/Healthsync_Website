@@ -4,6 +4,12 @@ const resume = form.elements.resume;
 const drop = resume.closest('.apply-drop');
 const title = document.getElementById('resume-title');
 const meta = document.getElementById('resume-meta');
+const captchaInput = form.elements.captcha;
+const captchaToken = form.elements.captcha_token;
+const captchaLabel = document.getElementById('captcha-label');
+const button = form.querySelector('.apply-submit');
+const btnLabel = button.querySelector('.apply-submit-label');
+const btnWait = button.querySelector('.apply-submit-wait');
 
 function showResume(file) {
   if (!file) {
@@ -15,6 +21,15 @@ function showResume(file) {
   drop.classList.add('is-ready');
   title.textContent = file.name;
   meta.textContent = `${(file.size / 1024).toFixed(file.size > 1024 * 100 ? 0 : 1)} KB ready to send`;
+}
+
+async function loadCaptcha() {
+  const res = await fetch('/apply-captcha');
+  if (!res.ok) throw new Error('captcha');
+  const data = await res.json();
+  captchaToken.value = data.token;
+  captchaLabel.textContent = `What is ${data.a} + ${data.b}?`;
+  captchaInput.value = '';
 }
 
 resume.addEventListener('change', () => {
@@ -44,6 +59,10 @@ drop.addEventListener('drop', (e) => {
   showResume(file);
 });
 
+loadCaptcha().catch(() => {
+  captchaLabel.textContent = 'Captcha unavailable. Refresh the page.';
+});
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!form.reportValidity()) return;
@@ -58,16 +77,31 @@ form.addEventListener('submit', async (e) => {
     resume.reportValidity();
     return;
   }
+  if (!captchaToken.value || !String(captchaInput.value || '').trim()) {
+    captchaInput.setCustomValidity('Solve the quick check');
+    captchaInput.reportValidity();
+    return;
+  }
+  captchaInput.setCustomValidity('');
   resume.setCustomValidity('');
-  const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
+  button.classList.add('is-sending');
+  btnLabel.hidden = true;
+  btnWait.hidden = false;
   try {
     const res = await fetch('/apply', { method: 'POST', body: new FormData(form) });
+    if (res.status === 429) throw new Error('rate');
     if (!res.ok) throw new Error('send');
     form.hidden = true;
     done.hidden = false;
-  } catch {
+  } catch (err) {
     button.disabled = false;
-    button.textContent = "Couldn't send. Try again";
+    button.classList.remove('is-sending');
+    btnLabel.hidden = false;
+    btnWait.hidden = true;
+    btnLabel.textContent = err.message === 'rate'
+      ? 'Too many tries. Wait a bit.'
+      : "Couldn't send. Try again";
+    loadCaptcha().catch(() => {});
   }
 });

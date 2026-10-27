@@ -3538,6 +3538,33 @@ body.contact-page {
   border-color: var(--orange);
   box-shadow: 0 0 0 4px #00a8ff22;
 }
+.apply-captcha-row {
+  grid-template-columns: minmax(0, 220px);
+}
+.apply-submit .apply-submit-wait {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.apply-submit .apply-submit-wait[hidden],
+.apply-submit .apply-submit-label[hidden] {
+  display: none;
+}
+.apply-submit.is-sending {
+  pointer-events: none;
+  opacity: 0.92;
+}
+.apply-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff55;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: apply-spin 0.7s linear infinite;
+}
+@keyframes apply-spin {
+  to { transform: rotate(360deg); }
+}
 .contact-form fieldset {
   margin: 0;
   padding: 0;
