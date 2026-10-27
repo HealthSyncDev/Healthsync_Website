@@ -355,6 +355,29 @@ class Handler(SimpleHTTPRequestHandler):
                 break
             left -= len(chunk)
 
+    def _serve_apply(self):
+        # inject captcha so mobile still shows the question if JS fetch is slow/blocked
+        with open(os.path.join("public", "apply.html"), encoding="utf-8") as fh:
+            page = fh.read()
+        c = issue_captcha()
+        q = f"What is {c['a']} + {c['b']}?"
+        page = page.replace(
+            'id="captcha-q">Loading…</p>',
+            f'id="captcha-q" data-ready="1">{html.escape(q)}</p>',
+            1,
+        ).replace(
+            'name="captcha_token" value=""',
+            f'name="captcha_token" value="{html.escape(c["token"], quote=True)}"',
+            1,
+        )
+        raw = page.encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(raw)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(raw)
+
     def do_GET(self):
         try:
             path = self.path.split("?", 1)[0].rstrip("/")
@@ -365,9 +388,9 @@ class Handler(SimpleHTTPRequestHandler):
                     return
                 self._json(200, issue_captcha())
                 return
-            # ponytail: pretty path only; file stays apply.html
-            if path == "/apply":
-                self.path = "/apply.html"
+            if path in ("/apply", "/apply.html"):
+                self._serve_apply()
+                return
             return super().do_GET()
         except Exception as err:
             print("GET failed:", type(err).__name__, flush=True)

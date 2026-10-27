@@ -11,7 +11,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body class="contact-page apply-page">
 <div class="site-shell">
@@ -125,11 +125,14 @@
           </label>
         </div>
 
-        <div class="contact-row apply-captcha-row">
-          <label><span class="contact-label" id="captcha-label">Quick check</span>
-            <input name="captcha" type="text" inputmode="numeric" autocomplete="off" required placeholder="Answer">
-            <input type="hidden" name="captcha_token" value="">
+        <div class="apply-captcha">
+          <span class="contact-label">Quick check</span>
+          <p class="apply-captcha-q" id="captcha-q">Loading…</p>
+          <label class="apply-captcha-field">
+            <span class="visually-hidden">Your answer</span>
+            <input name="captcha" type="text" inputmode="numeric" autocomplete="off" required placeholder="Your answer">
           </label>
+          <input type="hidden" name="captcha_token" value="">
         </div>
 
         <button class="orange-button apply-submit" type="submit">
@@ -147,6 +150,6 @@
     </section>
   </main>
 </div>
-<script type="module" src="apply.js"></script>
+<script src="apply.js?v=17"></script>
 </body>
 </html>

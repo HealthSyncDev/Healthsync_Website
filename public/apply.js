@@ -6,7 +6,7 @@ const title = document.getElementById('resume-title');
 const meta = document.getElementById('resume-meta');
 const captchaInput = form.elements.captcha;
 const captchaToken = form.elements.captcha_token;
-const captchaLabel = document.getElementById('captcha-label');
+const captchaQ = document.getElementById('captcha-q');
 const button = form.querySelector('.apply-submit');
 const btnLabel = button.querySelector('.apply-submit-label');
 const btnWait = button.querySelector('.apply-submit-wait');
@@ -23,13 +23,16 @@ function showResume(file) {
   meta.textContent = `${(file.size / 1024).toFixed(file.size > 1024 * 100 ? 0 : 1)} KB ready to send`;
 }
 
-async function loadCaptcha() {
-  const res = await fetch('/apply-captcha');
-  if (!res.ok) throw new Error('captcha');
-  const data = await res.json();
+function setCaptcha(data) {
   captchaToken.value = data.token;
-  captchaLabel.textContent = `What is ${data.a} + ${data.b}?`;
+  captchaQ.textContent = `What is ${data.a} + ${data.b}?`;
   captchaInput.value = '';
+}
+
+async function loadCaptcha() {
+  const res = await fetch('/apply-captcha', { cache: 'no-store' });
+  if (!res.ok) throw new Error('captcha');
+  setCaptcha(await res.json());
 }
 
 resume.addEventListener('change', () => {
@@ -59,9 +62,13 @@ drop.addEventListener('drop', (e) => {
   showResume(file);
 });
 
-loadCaptcha().catch(() => {
-  captchaLabel.textContent = 'Captcha unavailable. Refresh the page.';
-});
+if (captchaToken.value && captchaQ.dataset.ready === '1') {
+  // server already injected the challenge
+} else {
+  loadCaptcha().catch(() => {
+    captchaQ.textContent = 'Could not load check. Refresh the page.';
+  });
+}
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -102,6 +109,8 @@ form.addEventListener('submit', async (e) => {
     btnLabel.textContent = err.message === 'rate'
       ? 'Too many tries. Wait a bit.'
       : "Couldn't send. Try again";
-    loadCaptcha().catch(() => {});
+    loadCaptcha().catch(() => {
+      captchaQ.textContent = 'Could not load check. Refresh the page.';
+    });
   }
 });
