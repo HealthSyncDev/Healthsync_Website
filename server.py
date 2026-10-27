@@ -1,11 +1,19 @@
-"""Serve public/ and POST /contact via the mailbox in .env."""
+"""Serve public/ and POST /contact + /apply via the mailbox in .env."""
 import html
 import json
 import os
 import re
 import smtplib
+from email import message_from_bytes
 from email.message import EmailMessage
+from email.policy import default as email_policy
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+_STATUS = frozenset({"Student", "Recent graduate", "Currently employed", "Other"})
+_ROLE = frozenset({"Backend Developer", "Frontend Developer"})
+_REMOTE = frozenset({"Yes", "No"})
+_RESUME_EXT = frozenset({".pdf", ".doc", ".docx"})
+_URL = re.compile(r"^https?://[^\s]+$", re.I)
 
 def load_env(path=".env"):
     if not os.path.exists(path):
@@ -98,36 +106,18 @@ def person_email(value):
         raise ValueError("email")
     return text
 
-def send_enquiry(data):
-    name = person_name(data.get("name"))
-    email = person_email(data.get("email"))
-    brief = str(data.get("brief") or "").strip()
-    needs = data.get("need") or []
-    if not isinstance(needs, list) or not needs or len(needs) > 8 or len(brief) > 5000:
-        raise ValueError("need")
-    chosen = ", ".join(field(item, 80) for item in needs)
-    to = split_addrs(os.environ.get("CONTACT_TO"))
-    cc = split_addrs(os.environ.get("CONTACT_CC"))
+def _smtp_send(msg, to_env="CONTACT_TO", cc_env="CONTACT_CC"):
+    to = split_addrs(os.environ.get(to_env))
+    cc = split_addrs(os.environ.get(cc_env) if cc_env else "")
     user = os.environ.get("SMTP_USER") or ""
     password = os.environ.get("SMTP_PASS") or ""
     host = os.environ.get("SMTP_HOST") or ""
     if not to or not user or not password or not host:
         raise RuntimeError("mail not configured")
-    msg = EmailMessage()
     msg["From"] = user
     msg["To"] = ", ".join(to)
     if cc:
         msg["Cc"] = ", ".join(cc)
-    msg["Reply-To"] = email
-    msg["Subject"] = "HealthSync enquiry — " + chosen
-    msg.set_content("\n".join([
-        f"Name: {name}",
-        f"Email: {email}",
-        f"Needs: {chosen}",
-        "",
-        brief,
-    ]))
-    msg.add_alternative(enquiry_html(name, email, chosen, brief), subtype="html")
     port = int(os.environ.get("SMTP_PORT") or "465")
     # ponytail: one SMTP login per message; a pool only matters under real volume
     if port == 465:
@@ -141,9 +131,162 @@ def send_enquiry(data):
     finally:
         smtp.quit()
 
+def send_enquiry(data):
+    name = person_name(data.get("name"))
+    email = person_email(data.get("email"))
+    brief = str(data.get("brief") or "").strip()
+    needs = data.get("need") or []
+    if not isinstance(needs, list) or not needs or len(needs) > 8 or len(brief) > 5000:
+        raise ValueError("need")
+    chosen = ", ".join(field(item, 80) for item in needs)
+    msg = EmailMessage()
+    msg["Reply-To"] = email
+    msg["Subject"] = "HealthSync enquiry — " + chosen
+    msg.set_content("\n".join([
+        f"Name: {name}",
+        f"Email: {email}",
+        f"Needs: {chosen}",
+        "",
+        brief,
+    ]))
+    msg.add_alternative(enquiry_html(name, email, chosen, brief), subtype="html")
+    _smtp_send(msg)
+
+def optional_url(value, limit=300):
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    if len(text) > limit or not _URL.fullmatch(text):
+        raise ValueError("url")
+    return text
+
+def parse_multipart(content_type, body):
+    msg = message_from_bytes(
+        f"Content-Type: {content_type}\r\nMIME-Version: 1.0\r\n\r\n".encode() + body,
+        policy=email_policy,
+    )
+    fields, files = {}, {}
+    if not msg.is_multipart():
+        raise ValueError("multipart")
+    for part in msg.iter_parts():
+        name = part.get_param("name", header="content-disposition")
+        if not name:
+            continue
+        filename = part.get_filename()
+        payload = part.get_payload(decode=True) or b""
+        if filename:
+            files[name] = (filename, payload, part.get_content_type() or "application/octet-stream")
+        else:
+            fields[name] = payload.decode("utf-8", errors="replace")
+    return fields, files
+
+def application_html(data):
+    reply = html.escape(data["email"], quote=True)
+    order = [
+        ("Phone", data["phone"]),
+        ("Location", data["location"]),
+        ("Role", data["role"]),
+        ("Status", data["status"]),
+        ("Remote / flexible hours", data["remote"]),
+        ("LinkedIn", data["linkedin"]),
+        ("GitHub / portfolio", data["portfolio"] or "-"),
+        ("Resume", data["resume_name"]),
+        ("Stack", data["stack"]),
+        ("Project / problem", data["project"]),
+        ("API investigation", data["debug"]),
+        ("AI tools & verification", data["ai_tools"]),
+        ("Why healthcare", data["why_health"]),
+    ]
+    rows = "".join(
+        _rule(24 if i else 32)
+        + f'<tr><td style="padding:16px 44px 0;"><div style="{LABEL}">{label}</div><div style="{VALUE}">{_esc(value)}</div></td></tr>'
+        for i, (label, value) in enumerate(order)
+    )
+    return f"""<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>New application — HealthSync</title></head>
+<body style="margin:0;padding:0;background:#eef2f7;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#eef2f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+ <tr><td align="center" style="padding:44px 20px;">
+ <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e4ebf3;border-radius:18px;">
+ <tr><td height="5" style="height:5px;line-height:0;font-size:0;background:#00a8ff;background-image:linear-gradient(90deg,#1e327e 0%,#00a8ff 100%);">&nbsp;</td></tr>
+ <tr><td style="padding:40px 44px 0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+ <td width="34" height="34" align="center" valign="middle" bgcolor="#1e327e" style="width:34px;height:34px;border-radius:10px;color:#ffffff;font-size:15px;font-weight:700;line-height:34px;">H</td>
+ <td style="padding-left:13px;font-size:13px;font-weight:700;letter-spacing:.26em;color:#1e327e;">HEALTHSYNC</td>
+ <td align="right" style="font-size:12px;font-weight:500;color:#9aa8ba;">Application</td>
+ </tr></table></td></tr>
+ <tr><td style="padding:34px 44px 0;">
+ <div style="padding-bottom:14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#00a8ff;">New application</div>
+ <div style="font-size:30px;line-height:1.2;font-weight:600;letter-spacing:-.02em;color:#141f33;">{_esc(data["name"])}</div>
+ <div style="padding-top:10px;font-size:15px;line-height:1.6;color:#64748b;"><a href="mailto:{reply}" style="color:#0077b8;text-decoration:none;">{_esc(data["email"])}</a></div>
+ </td></tr>
+ {rows}
+ <tr><td style="padding:34px 44px 38px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e6edf5;"><tr>
+ <td style="padding-top:18px;font-size:12px;line-height:1.6;color:#8a9bb0;">HealthSync &middot; healthsync.ae</td>
+ <td align="right" style="padding-top:18px;font-size:12px;line-height:1.6;color:#aab6c4;">&copy; 2026 HealthSync</td>
+ </tr></table></td></tr>
+ </table></td></tr></table></body></html>"""
+
+def send_application(fields, files):
+    name = person_name(fields.get("name"))
+    email = person_email(fields.get("email"))
+    phone = field(fields.get("phone"), 40)
+    location = field(fields.get("location"), 120)
+    linkedin = optional_url(fields.get("linkedin"))
+    if not linkedin:
+        raise ValueError("linkedin")
+    portfolio = optional_url(fields.get("portfolio"))
+    role = field(fields.get("role"), 40)
+    status = field(fields.get("status"), 40)
+    remote = field(fields.get("remote"), 8)
+    if role not in _ROLE or status not in _STATUS or remote not in _REMOTE:
+        raise ValueError("choice")
+    stack = field(fields.get("stack"), 4000, header=False)
+    project = field(fields.get("project"), 5000, header=False)
+    debug = field(fields.get("debug"), 5000, header=False)
+    ai_tools = field(fields.get("ai_tools"), 4000, header=False)
+    why_health = field(fields.get("why_health"), 4000, header=False)
+    resume = files.get("resume")
+    if not resume:
+        raise ValueError("resume")
+    resume_name, resume_bytes, resume_type = resume
+    resume_name = os.path.basename(resume_name.replace("\\", "/")).strip() or "resume.pdf"
+    ext = os.path.splitext(resume_name)[1].lower()
+    if ext not in _RESUME_EXT or not resume_bytes or len(resume_bytes) > 5_000_000:
+        raise ValueError("resume")
+    data = {
+        "name": name, "email": email, "phone": phone, "location": location,
+        "linkedin": linkedin, "portfolio": portfolio, "role": role, "status": status, "remote": remote,
+        "stack": stack, "project": project, "debug": debug, "ai_tools": ai_tools,
+        "why_health": why_health, "resume_name": resume_name,
+    }
+    msg = EmailMessage()
+    msg["Reply-To"] = email
+    msg["Subject"] = f"HealthSync application — {role} — {name}"
+    msg.set_content("\n".join([
+        f"Name: {name}", f"Email: {email}", f"Phone: {phone}", f"Location: {location}",
+        f"Role: {role}", f"Status: {status}", f"Remote: {remote}",
+        f"LinkedIn: {linkedin}", f"Portfolio: {portfolio or '-'}",
+        f"Resume: {resume_name}", "",
+        "Stack:", stack, "", "Project:", project, "", "API debug:", debug, "",
+        "AI tools:", ai_tools, "", "Why healthcare:", why_health,
+    ]))
+    msg.add_alternative(application_html(data), subtype="html")
+    main = {"application/pdf": "pdf", "application/msword": "doc",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx"}.get(resume_type, "octet-stream")
+    msg.add_attachment(resume_bytes, maintype="application", subtype=main, filename=resume_name)
+    # ponytail: APPLY_TO only; no APPLY_CC until they ask
+    _smtp_send(msg, to_env="APPLY_TO", cc_env="")
+
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory="public", **kwargs)
+
+    def do_GET(self):
+        # ponytail: pretty path only; file stays apply.html
+        if self.path.split("?", 1)[0].rstrip("/") == "/apply":
+            self.path = "/apply.html"
+        return super().do_GET()
 
     def end_headers(self):
         # ponytail: one origin; add a list if more sites call this
@@ -166,30 +309,35 @@ class Handler(SimpleHTTPRequestHandler):
         self.wfile.write(raw)
 
     def do_POST(self):
-        if self.path.split("?", 1)[0].rstrip("/") != "/contact":
+        path = self.path.split("?", 1)[0].rstrip("/")
+        if path not in ("/contact", "/apply"):
             self.send_error(404)
             return
         try:
             size = int(self.headers.get("Content-Length") or 0)
         except ValueError:
             size = 0
-        if size <= 0 or size > 20_000:
+        limit = 5_200_000 if path == "/apply" else 20_000
+        if size <= 0 or size > limit:
             self._json(400, {"error": "bad body"})
             return
+        raw = self.rfile.read(size)
         try:
-            data = json.loads(self.rfile.read(size))
-        except json.JSONDecodeError:
-            self._json(400, {"error": "bad json"})
-            return
-        if not isinstance(data, dict):
-            self._json(400, {"error": "bad json"})
-            return
-        try:
-            send_enquiry(data)
-        except ValueError:
+            if path == "/contact":
+                data = json.loads(raw)
+                if not isinstance(data, dict):
+                    raise ValueError("json")
+                send_enquiry(data)
+            else:
+                ctype = self.headers.get("Content-Type") or ""
+                if "multipart/form-data" not in ctype:
+                    raise ValueError("multipart")
+                fields, files = parse_multipart(ctype, raw)
+                send_application(fields, files)
+        except (json.JSONDecodeError, ValueError):
             self._json(400, {"error": "bad field"})
         except Exception as err:
-            print("contact mail failed:", type(err).__name__, flush=True)
+            print(path, "mail failed:", type(err).__name__, flush=True)
             self._json(502, {"error": "mail failed"})
         else:
             self._json(200, {"ok": True})
@@ -220,7 +368,25 @@ def _demo():
         except ValueError:
             pass
         else:
-            raise SystemExit(bad) 
+            raise SystemExit(bad)
+    assert optional_url("") == ""
+    assert optional_url("https://github.com/x") == "https://github.com/x"
+    try:
+        optional_url("not-a-url")
+    except ValueError:
+        pass
+    else:
+        raise SystemExit("bad url")
+    # multipart smoke
+    boundary = "----hs"
+    sample = (
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nAda Lovelace\r\n"
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"resume\"; filename=\"cv.pdf\"\r\n"
+        f"Content-Type: application/pdf\r\n\r\n%PDF\r\n"
+        f"--{boundary}--\r\n"
+    ).encode()
+    fields, files = parse_multipart(f"multipart/form-data; boundary={boundary}", sample)
+    assert fields["name"] == "Ada Lovelace" and files["resume"][0] == "cv.pdf"
 
 if __name__ == "__main__":
     _demo()

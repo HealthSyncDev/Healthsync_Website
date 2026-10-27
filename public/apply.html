@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f5f9">
+  <title>Apply | HealthSync</title>
+  <meta name="description" content="Apply to build healthcare software with HealthSync. Write in your own words.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="styles.css?v=15">
+</head>
+<body class="contact-page apply-page">
+<div class="site-shell">
+  <header class="site-header">
+    <div class="header-brand">
+      <a class="logo" href="index.html" aria-label="HealthSync home"><span>HealthSync</span></a>
+    </div>
+    <nav class="header-actions" aria-label="Primary navigation">
+      <a class="nav-contact" href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="apply-title">
+      <div class="hero-fold">
+        <h1 id="apply-title">Build software that<br><span class="hero-premium">hospitals rely on.</span></h1>
+        <p>Backend-focused role. Flexible remote hours. Real product work in healthcare.</p>
+      </div>
+    </section>
+
+    <section class="contact-card" aria-label="Application form">
+      <aside class="apply-note" role="note">
+        <strong>Write this yourself.</strong>
+        AI-generated answers are easy to spot, and they tell us nothing about how you think.
+        Short, honest, specific answers beat polished fluff. We read for genuineness.
+      </aside>
+
+      <form id="apply-form" class="contact-form" novalidate enctype="multipart/form-data">
+        <div class="contact-row">
+          <label><span class="contact-label">Full name</span>
+            <input name="name" type="text" autocomplete="name" required placeholder="First and last name">
+          </label>
+          <label><span class="contact-label">Email address</span>
+            <input name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
+          </label>
+        </div>
+
+        <div class="contact-row">
+          <label><span class="contact-label">Phone number</span>
+            <input name="phone" type="tel" autocomplete="tel" required placeholder="+971 50 000 0000">
+          </label>
+          <label><span class="contact-label">Current location</span>
+            <input name="location" type="text" autocomplete="address-level2" required placeholder="City and state / emirate">
+          </label>
+        </div>
+
+        <div class="contact-row">
+          <label><span class="contact-label">LinkedIn profile</span>
+            <input name="linkedin" type="url" inputmode="url" required placeholder="https://linkedin.com/in/…">
+          </label>
+          <label><span class="contact-label">GitHub or portfolio <em class="opt">(optional)</em></span>
+            <input name="portfolio" type="url" inputmode="url" placeholder="https://github.com/…">
+          </label>
+        </div>
+
+        <fieldset>
+          <legend class="contact-label">Role you're applying for</legend>
+          <div class="contact-chips">
+            <label class="contact-chip"><input type="radio" name="role" value="Backend Developer" required><span>Backend Developer</span></label>
+            <label class="contact-chip"><input type="radio" name="role" value="Frontend Developer"><span>Frontend Developer</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="contact-label">Current educational or professional status</legend>
+          <div class="contact-chips">
+            <label class="contact-chip"><input type="radio" name="status" value="Student" required><span>Student</span></label>
+            <label class="contact-chip"><input type="radio" name="status" value="Recent graduate"><span>Recent graduate</span></label>
+            <label class="contact-chip"><input type="radio" name="status" value="Currently employed"><span>Currently employed</span></label>
+            <label class="contact-chip"><input type="radio" name="status" value="Other"><span>Other</span></label>
+          </div>
+        </fieldset>
+
+        <label class="contact-brief"><span class="contact-label">Languages &amp; backend technologies you've worked with</span>
+          <textarea name="stack" rows="3" required placeholder="Be specific: languages, frameworks, databases, tools. Your real experience, not a keyword dump."></textarea>
+        </label>
+
+        <label class="contact-brief"><span class="contact-label">One project or technical problem you worked on</span>
+          <textarea name="project" rows="4" required placeholder="What was the problem? What did you do? What changed because of it? Your words."></textarea>
+        </label>
+
+        <label class="contact-brief"><span class="contact-label">How would you investigate an API that sometimes fails?</span>
+          <textarea name="debug" rows="4" required placeholder="Walk through how you'd dig in. We want your approach, not a textbook list."></textarea>
+        </label>
+
+        <label class="contact-brief"><span class="contact-label">AI coding tools you've used, and how you verify the code</span>
+          <textarea name="ai_tools" rows="3" required placeholder="Which tools, and how you check that the output is actually correct."></textarea>
+        </label>
+
+        <fieldset>
+          <legend class="contact-label">Comfortable with remote work, flexible hours, agreed deadlines, and regular team communication?</legend>
+          <div class="contact-chips">
+            <label class="contact-chip"><input type="radio" name="remote" value="Yes" required><span>Yes</span></label>
+            <label class="contact-chip"><input type="radio" name="remote" value="No"><span>No</span></label>
+          </div>
+        </fieldset>
+
+        <label class="contact-brief"><span class="contact-label">Why healthcare software?</span>
+          <textarea name="why_health" rows="3" required placeholder="Why this sector, not a generic 'I love tech' answer."></textarea>
+        </label>
+
+        <div class="contact-brief apply-file">
+          <span class="contact-label" id="resume-label">Resume</span>
+          <label class="apply-drop" for="resume">
+            <input id="resume" name="resume" type="file" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-labelledby="resume-label">
+            <span class="apply-drop-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17V11"/><path d="m9.5 13.5 2.5-2.5 2.5 2.5"/></svg>
+            </span>
+            <span class="apply-drop-title" id="resume-title">Drop your resume here, or <em>browse</em></span>
+            <span class="apply-drop-meta" id="resume-meta">PDF preferred · DOC / DOCX ok · Max 5 MB</span>
+          </label>
+        </div>
+
+        <button class="orange-button" type="submit">Submit application <span aria-hidden="true">↗</span></button>
+      </form>
+
+      <div class="contact-done" id="apply-done" hidden>
+        <p class="section-pill">Application received</p>
+        <h2>Thanks. <em>We'll be in touch.</em></h2>
+        <p>If your experience looks like a fit, we'll reach out by email.</p>
+        <a class="orange-button" href="index.html">Back to HealthSync <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+</div>
+<script type="module" src="apply.js"></script>
+</body>
+</html>
