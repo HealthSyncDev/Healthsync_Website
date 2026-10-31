@@ -373,9 +373,13 @@ a {
 .nav-careers {
   padding: 8px 6px;
   color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
   text-decoration: none;
 }
-.nav-careers:hover {
+.nav-careers:hover,
+.nav-careers[aria-current="page"] {
   color: var(--deep);
 }
 .nav-access,
