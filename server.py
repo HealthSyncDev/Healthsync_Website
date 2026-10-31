@@ -249,11 +249,7 @@ def application_html(data):
         ("LinkedIn", data["linkedin"]),
         ("GitHub / portfolio", data["portfolio"] or "-"),
         ("Resume", data["resume_name"]),
-        ("Stack", data["stack"]),
-        ("Project / problem", data["project"]),
-        ("API investigation", data["debug"]),
         ("AI tools & verification", data["ai_tools"]),
-        ("Why healthcare", data["why_health"]),
         ("Salary expectation (INR)", data["salary"]),
     ]
     rows = "".join(
@@ -301,11 +297,7 @@ def send_application(fields, files):
     remote = field(fields.get("remote"), 8)
     if role not in _ROLE or status not in _STATUS or remote not in _REMOTE:
         raise ValueError("choice")
-    stack = field(fields.get("stack"), 4000, header=False)
-    project = field(fields.get("project"), 5000, header=False)
-    debug = field(fields.get("debug"), 5000, header=False)
     ai_tools = field(fields.get("ai_tools"), 4000, header=False)
-    why_health = field(fields.get("why_health"), 4000, header=False)
     salary = field(fields.get("salary"), 120)
     resume = files.get("resume")
     if not resume:
@@ -320,8 +312,7 @@ def send_application(fields, files):
     data = {
         "name": name, "email": email, "phone": phone, "location": location,
         "linkedin": linkedin, "portfolio": portfolio, "role": role, "status": status, "remote": remote,
-        "stack": stack, "project": project, "debug": debug, "ai_tools": ai_tools,
-        "why_health": why_health, "salary": salary, "resume_name": resume_name,
+        "ai_tools": ai_tools, "salary": salary, "resume_name": resume_name,
     }
     msg = EmailMessage()
     msg["Reply-To"] = email
@@ -331,8 +322,7 @@ def send_application(fields, files):
         f"Role: {role}", f"Status: {status}", f"Remote: {remote}",
         f"LinkedIn: {linkedin}", f"Portfolio: {portfolio or '-'}",
         f"Salary: {salary}", f"Resume: {resume_name}", "",
-        "Stack:", stack, "", "Project:", project, "", "API debug:", debug, "",
-        "AI tools:", ai_tools, "", "Why healthcare:", why_health,
+        "AI tools:", ai_tools,
     ]))
     msg.add_alternative(application_html(data), subtype="html")
     main = {"application/pdf": "pdf", "application/msword": "doc",
