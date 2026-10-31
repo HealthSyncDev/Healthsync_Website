@@ -370,6 +370,14 @@ a {
   font-size: 14px;
   font-weight: 700;
 }
+.nav-careers {
+  padding: 8px 6px;
+  color: var(--navy);
+  text-decoration: none;
+}
+.nav-careers:hover {
+  color: var(--deep);
+}
 .nav-access,
 .nav-contact {
   padding: 15px 24px;
@@ -2655,6 +2663,10 @@ p {
     height: 27px;
     background-size: 5px 5px;
   }
+  .nav-careers {
+    font-size: 12px;
+    padding: 6px 4px;
+  }
   .nav-access,
   .nav-contact {
     padding: 11px 13px;
@@ -3353,6 +3365,7 @@ body.contact-page {
   gap: 16px 20px;
 }
 .contact-row > label,
+.contact-form > label,
 .contact-brief,
 .contact-form fieldset {
   display: flex;
@@ -3404,6 +3417,11 @@ body.contact-page {
   background-color: #fff;
   box-shadow: 0 0 0 4px #00a8ff22;
 }
+.contact-form select option:disabled {
+  color: #b0bbc8;
+  font-size: 13px;
+  opacity: 0.55;
+}
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
   color: #9aa8b8;
@@ -3450,6 +3468,20 @@ body.contact-page {
 }
 .apply-page .contact-card {
   width: min(720px, calc(100% - 40px));
+}
+.apply-page .contact-form {
+  gap: 22px;
+}
+.apply-page .contact-row {
+  gap: 18px 20px;
+}
+.apply-page .contact-row > label,
+.apply-page .contact-form > label,
+.apply-page .contact-brief,
+.apply-page .contact-form fieldset,
+.apply-page .apply-file,
+.apply-page .apply-captcha {
+  gap: 10px;
 }
 .apply-page .contact-label {
   font-size: 14px;
