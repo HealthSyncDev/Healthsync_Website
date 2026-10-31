@@ -11,7 +11,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body class="contact-page apply-page">
 <div class="site-shell">
@@ -67,13 +67,14 @@
           </label>
         </div>
 
-        <fieldset>
-          <legend class="contact-label">Role you're applying for</legend>
-          <div class="contact-chips">
-            <label class="contact-chip"><input type="radio" name="role" value="Backend Developer" required><span>Backend Developer</span></label>
-            <label class="contact-chip"><input type="radio" name="role" value="Frontend Developer"><span>Frontend Developer</span></label>
-          </div>
-        </fieldset>
+        <label><span class="contact-label">Role you're applying for</span>
+          <select name="role" required>
+            <option value="Backend Intern">Backend Intern</option>
+            <option value="Junior Software Engineer" disabled>Junior Software Engineer</option>
+            <option value="Backend Developer" disabled>Backend Developer</option>
+            <option value="Frontend Developer" disabled>Frontend Developer</option>
+          </select>
+        </label>
 
         <fieldset>
           <legend class="contact-label">Current educational or professional status</legend>

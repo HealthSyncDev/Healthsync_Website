@@ -16,7 +16,7 @@ from email.policy import default as email_policy
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 _STATUS = frozenset({"Student", "Recent graduate", "Currently employed", "Other"})
-_ROLE = frozenset({"Backend Developer", "Frontend Developer"})
+_ROLE = frozenset({"Backend Intern"})
 _REMOTE = frozenset({"Yes", "No"})
 _RESUME_EXT = frozenset({".pdf", ".doc", ".docx"})
 _URL = re.compile(r"^https?://[^\s]+$", re.I)

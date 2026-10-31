@@ -3375,6 +3375,7 @@ body.contact-page {
 .contact-form input[type="email"],
 .contact-form input[type="tel"],
 .contact-form input[type="url"],
+.contact-form select,
 .contact-form textarea {
   display: block;
   width: 100%;
@@ -3388,6 +3389,20 @@ body.contact-page {
   font-size: 16px;
   font-weight: 500;
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.contact-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23667588' d='M1.1 1.1 6 6l4.9-4.9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.contact-form select:focus {
+  outline: none;
+  border-color: var(--orange);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px #00a8ff22;
 }
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
