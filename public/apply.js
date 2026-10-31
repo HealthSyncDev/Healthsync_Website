@@ -10,6 +10,35 @@ const captchaQ = document.getElementById('captcha-q');
 const button = form.querySelector('.apply-submit');
 const btnLabel = button.querySelector('.apply-submit-label');
 const btnWait = button.querySelector('.apply-submit-wait');
+const roleBtn = document.getElementById('role-btn');
+const roleMenu = document.getElementById('role-menu');
+const roleInput = form.elements.role;
+const roleValue = roleBtn.querySelector('.apply-role-value');
+
+function closeRole() {
+  roleMenu.hidden = true;
+  roleBtn.setAttribute('aria-expanded', 'false');
+}
+
+roleBtn.addEventListener('click', () => {
+  const open = roleMenu.hidden;
+  roleMenu.hidden = !open;
+  roleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+
+roleMenu.addEventListener('click', (e) => {
+  const item = e.target.closest('li');
+  if (!item || item.classList.contains('is-filled')) return;
+  roleMenu.querySelectorAll('[aria-selected="true"]').forEach((el) => el.setAttribute('aria-selected', 'false'));
+  item.setAttribute('aria-selected', 'true');
+  roleInput.value = item.dataset.value;
+  roleValue.textContent = item.dataset.value;
+  closeRole();
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.apply-role')) closeRole();
+});
 
 function showResume(file) {
   if (!file) {

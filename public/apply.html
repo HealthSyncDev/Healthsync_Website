@@ -11,7 +11,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body class="contact-page apply-page">
 <div class="site-shell">
@@ -69,14 +69,19 @@
           </label>
         </div>
 
-        <label><span class="contact-label">Role you're applying for</span>
-          <select name="role" required>
-            <option value="Backend Intern" selected>Backend Intern</option>
-            <option value="Junior Software Engineer" disabled>Junior Software Engineer · Filled</option>
-            <option value="Backend Developer" disabled>Backend Developer · Filled</option>
-            <option value="Frontend Developer" disabled>Frontend Developer · Filled</option>
-          </select>
-        </label>
+        <div class="apply-role">
+          <span class="contact-label" id="role-label">Role you're applying for</span>
+          <input type="hidden" name="role" value="Backend Intern" required>
+          <button type="button" class="apply-role-btn" id="role-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="role-label">
+            <span class="apply-role-value">Backend Intern</span>
+          </button>
+          <ul class="apply-role-menu" id="role-menu" role="listbox" hidden>
+            <li role="option" aria-selected="true" data-value="Backend Intern" tabindex="-1">Backend Intern</li>
+            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Junior Software Engineer <span>Filled</span></li>
+            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Backend Developer <span>Filled</span></li>
+            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Frontend Developer <span>Filled</span></li>
+          </ul>
+        </div>
 
         <fieldset>
           <legend class="contact-label">Current educational or professional status</legend>
@@ -157,6 +162,6 @@
     </section>
   </main>
 </div>
-<script src="apply.js?v=17"></script>
+<script src="apply.js?v=18"></script>
 </body>
 </html>
