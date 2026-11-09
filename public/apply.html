@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f2f5f9">
-  <title>Apply | HealthSync</title>
-  <meta name="description" content="Apply to build healthcare software with HealthSync. Write in your own words.">
+  <title>Careers | HealthSync</title>
+  <meta name="description" content="Careers at HealthSync. There are no open roles at the moment.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400..900&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="styles.css?v=24">
 </head>
 <body class="contact-page apply-page">
 <div class="site-shell">
@@ -29,123 +29,20 @@
   <main>
     <section class="hero" aria-labelledby="apply-title">
       <div class="hero-fold">
-        <h1 id="apply-title">Build software that<br><span class="hero-premium">hospitals rely on.</span></h1>
-        <p>Backend-focused role. Flexible remote hours. Real product work in healthcare.</p>
+        <h1 id="apply-title">Careers at<br><span class="hero-premium">HealthSync.</span></h1>
+        <p>We build software hospitals rely on. New roles will be listed here when they open.</p>
       </div>
     </section>
 
-    <section class="contact-card" aria-label="Application form">
-      <form id="apply-form" class="contact-form" novalidate enctype="multipart/form-data">
-        <aside class="apply-note" role="note">
-          <strong>Write this yourself.</strong>
-          AI-generated answers are easy to spot, and they tell us nothing about how you think.
-          Short, honest, specific answers beat polished fluff. We read for genuineness.
-        </aside>
-
-        <div class="contact-row">
-          <label><span class="contact-label">Full name</span>
-            <input name="name" type="text" autocomplete="name" required placeholder="First and last name">
-          </label>
-          <label><span class="contact-label">Email address</span>
-            <input name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
-          </label>
-        </div>
-
-        <div class="contact-row">
-          <label><span class="contact-label">Phone number</span>
-            <input name="phone" type="tel" autocomplete="tel" required placeholder="+971 50 000 0000">
-          </label>
-          <label><span class="contact-label">Current location</span>
-            <input name="location" type="text" autocomplete="address-level2" required placeholder="City and state / emirate">
-          </label>
-        </div>
-
-        <div class="contact-row">
-          <label><span class="contact-label">LinkedIn profile</span>
-            <input name="linkedin" type="url" inputmode="url" required placeholder="https://linkedin.com/in/…">
-          </label>
-          <label><span class="contact-label">GitHub or portfolio <em class="opt">(optional)</em></span>
-            <input name="portfolio" type="url" inputmode="url" placeholder="https://github.com/…">
-          </label>
-        </div>
-
-        <div class="apply-role">
-          <span class="contact-label" id="role-label">Role you're applying for</span>
-          <input type="hidden" name="role" value="Backend Intern" required>
-          <button type="button" class="apply-role-btn" id="role-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="role-label">
-            <span class="apply-role-value">Backend Intern</span>
-          </button>
-          <ul class="apply-role-menu" id="role-menu" role="listbox" hidden>
-            <li role="option" aria-selected="true" data-value="Backend Intern" tabindex="-1">Backend Intern</li>
-            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Junior Software Engineer <span>Filled</span></li>
-            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Backend Developer <span>Filled</span></li>
-            <li role="option" aria-disabled="true" class="is-filled" tabindex="-1">Frontend Developer <span>Filled</span></li>
-          </ul>
-        </div>
-
-        <fieldset>
-          <legend class="contact-label">Current educational or professional status</legend>
-          <div class="contact-chips">
-            <label class="contact-chip"><input type="radio" name="status" value="Student" required><span>Student</span></label>
-            <label class="contact-chip"><input type="radio" name="status" value="Recent graduate"><span>Recent graduate</span></label>
-            <label class="contact-chip"><input type="radio" name="status" value="Currently employed"><span>Currently employed</span></label>
-            <label class="contact-chip"><input type="radio" name="status" value="Other"><span>Other</span></label>
-          </div>
-        </fieldset>
-
-        <label class="contact-brief"><span class="contact-label">AI coding tools you've used, and how you verify the code</span>
-          <textarea name="ai_tools" rows="3" required placeholder="Which tools, and how you check that the output is actually correct."></textarea>
-        </label>
-
-        <fieldset>
-          <legend class="contact-label">Comfortable with remote work, flexible hours, agreed deadlines, and regular team communication?</legend>
-          <div class="contact-chips">
-            <label class="contact-chip"><input type="radio" name="remote" value="Yes" required><span>Yes</span></label>
-            <label class="contact-chip"><input type="radio" name="remote" value="No"><span>No</span></label>
-          </div>
-        </fieldset>
-
-        <label><span class="contact-label">Salary expectation (INR)</span>
-          <input name="salary" type="text" required>
-        </label>
-
-        <div class="contact-brief apply-file">
-          <span class="contact-label" id="resume-label">Resume</span>
-          <label class="apply-drop" for="resume">
-            <input id="resume" name="resume" type="file" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-labelledby="resume-label">
-            <span class="apply-drop-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17V11"/><path d="m9.5 13.5 2.5-2.5 2.5 2.5"/></svg>
-            </span>
-            <span class="apply-drop-title" id="resume-title">Drop your resume here, or <em>browse</em></span>
-            <span class="apply-drop-meta" id="resume-meta">PDF preferred · DOC / DOCX ok · Max 5 MB</span>
-          </label>
-        </div>
-
-        <div class="apply-captcha">
-          <span class="contact-label">Quick check</span>
-          <p class="apply-captcha-q" id="captcha-q">Loading…</p>
-          <label class="apply-captcha-field">
-            <span class="visually-hidden">Your answer</span>
-            <input name="captcha" type="text" inputmode="numeric" autocomplete="off" required placeholder="Your answer">
-          </label>
-          <input type="hidden" name="captcha_token" value="">
-        </div>
-
-        <button class="orange-button apply-submit" type="submit">
-          <span class="apply-submit-label">Submit application <span aria-hidden="true">↗</span></span>
-          <span class="apply-submit-wait" hidden><span class="apply-spin" aria-hidden="true"></span> Sending…</span>
-        </button>
-      </form>
-
-      <div class="contact-done" id="apply-done" hidden>
-        <p class="section-pill">Application received</p>
-        <h2>Thanks. <em>We'll be in touch.</em></h2>
-        <p>If your experience looks like a fit, we'll reach out by email.</p>
-        <a class="orange-button" href="index.html">Back to HealthSync <span aria-hidden="true">→</span></a>
+    <section class="contact-card" aria-label="Current openings">
+      <div class="contact-done">
+        <p class="section-pill">Careers</p>
+        <h2>No openings <em>right now.</em></h2>
+        <p>All roles are currently filled. Check back later, or reach out if you’d like to stay in touch.</p>
+        <a class="orange-button" href="contact.html">Contact us <span aria-hidden="true">→</span></a>
       </div>
     </section>
   </main>
 </div>
-<script src="apply.js?v=18"></script>
 </body>
 </html>
